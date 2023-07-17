@@ -8,9 +8,26 @@ https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac
 
 # Step 1
 
-Once you are logged in Spotify and have Node.JS installed. Go to your terminal or CMD and from the folder Session_2_3. Follow the path: web-api-examples > authentication > authorization_code. 
+Once you are logged in Spotify and have Node.JS installed. Go to your terminal or CMD and from the folder Session_2_3. Follow the path: web-api > authentication > authorization_code. 
 
-Type in "node app.js" and press enter to launch to create the Spotify Access Token.
+Open this link: https://developer.spotify.com/dashboard 
+
+This will be to create an app for Spotify.After logging in to the page, you will see a blue button that says 'Create App' Click on that button.
+
+You can name your app name whatever you would like. 
+
+However, for the Redirect URI please paste in the following (The links will have to be on seperate lines):
+'http://localhost:8888 
+http://localhost:8888/callback'
+
+After clicking 'Save', you will be sent to a new webpage. 
+Click on settings and you should see the subheading 'Basic Information'.
+In 'Basic Information', you will find the Client ID. Take note of the Client ID. 
+Click on 'Client Secret' and you will have your client secret. Take note of this.
+
+In the path 'Session_2_3/web-api/authentication/authorization_code/app.js', open 'app.js' with a notepad or textedit or any suitable IDE, and go to line 16. Change the variable Client_ID to the client_id you saved earlier. You should see it saying 'PASTE CLIENT ID'. Change the variable client_secret to the client_secret you saved earlier. You should see it saying 'PASTE CLIENT SECRET'
+
+Once you have done this, save the file type in "node app.js" and press enter to launch to create the Spotify Access Token.
 
 Proceed to go to localhost:8888 in your browser. It should either say Log in with Spotify or should automatically come with a page saying authorize.
 
