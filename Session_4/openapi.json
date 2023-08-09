@@ -1,0 +1,879 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Open APIs",
+    "description": "Different specs for testing OpenAPI for catalog integrations",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.spotify.com"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Spotify"
+    }
+  ],
+  "paths": {
+    "/v1/me": {
+      "get": {
+        "tags": [
+          "Spotify"
+        ],
+        "summary": "Get User ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Your user id",
+                      "example": "6WjLMm5KC2gRJu8gqbO2LY"
+                    },
+                    "display_name": {
+                      "type": "string",
+                      "description": "Your display name",
+                      "example": "Bilbo Baggins"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/player/devices": {
+      "get": {
+        "tags": [
+          "Spotify"
+        ],
+        "summary": "Get My Devices",
+        "description": "Get information about a user’s available devices.\n",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "is_active": {
+                        "type": "boolean"
+                      },
+                      "is_private_session": {
+                        "type": "boolean"
+                      },
+                      "is_restricted": {
+                        "type": "boolean"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "volume_percent": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/playlists/{playlist_id}": {
+      "get": {
+        "tags": [
+          "Spotify"
+        ],
+        "summary": "Get Playlist",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "playlist_id",
+            "in": "path",
+            "description": "The playlist ID.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "3cEYpjA9oz9GiPac4AsH4n"
+            }
+          },
+          {
+            "name": "additional_types",
+            "in": "query",
+            "description": "A comma-separated list of item types that your client supports besides the default track type. Valid types are: track and episode.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "track"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Filters for the query: a comma-separated list of the fields to return.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "tracks.items(added_at,added_by.id)"
+            }
+          },
+          {
+            "name": "market",
+            "in": "query",
+            "description": "An ISO 3166-1 alpha-2 country code. If a country code is specified, only content that is available in that market will be returned.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "ES"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "collaborative": {
+                      "type": "boolean",
+                      "description": "Is a collaborative playlist."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Description of playlist",
+                      "example": "My awesome playlist!"
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Id of playlist.",
+                      "example": "6WjLMm5KC2gRJu8gqbO2LY"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Name of playlist.",
+                      "example": "Some Playlist Name"
+                    },
+                    "external_urls": {
+                      "type": "object",
+                      "properties": {
+                        "spotify": {
+                          "type": "string",
+                          "description": "External link to created playlist.",
+                          "example": "https://api.spotify.com/v1/playlists/6WjLMm5KC2gRJu8gqbO2LY"
+                        }
+                      }
+                    },
+                    "owner": {
+                      "type": "object",
+                      "properties": {
+                        "display_name": {
+                          "type": "string",
+                          "description": "Name of owner of this playlist",
+                          "example": "CMurray"
+                        }
+                      }
+                    },
+                    "public": {
+                      "type": "boolean",
+                      "description": "One of: public or private",
+                      "example": "public"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{user_id}/playlists": {
+      "get": {
+        "tags": [
+          "Spotify"
+        ],
+        "summary": "Get User_ID Playlists",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "31t2tr6kdgx6skxkgvhs6ary5z6u"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "The maximum number of items to return. Default: 20. Min: 1. Max: 50.",
+            "schema": {
+              "type": "number",
+              "example": 2
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "The maximum number of items to return. Default: 0.",
+            "schema": {
+              "type": "number",
+              "example": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "collaborative": {
+                            "type": "boolean"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "external_urls": {
+                            "type": "object",
+                            "properties": {
+                              "spotify": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "href": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "images": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "height": {
+                                  "type": "integer",
+                                  "format": "int32"
+                                },
+                                "url": {
+                                  "type": "string"
+                                },
+                                "width": {
+                                  "type": "integer",
+                                  "format": "int32"
+                                }
+                              }
+                            }
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "owner": {
+                            "type": "object",
+                            "properties": {
+                              "display_name": {
+                                "type": "string"
+                              },
+                              "external_urls": {
+                                "type": "object",
+                                "properties": {
+                                  "spotify": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "href": {
+                                "type": "string"
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string"
+                              },
+                              "uri": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "primary_color": {
+                            "type": "string",
+                            "format": "nullable"
+                          },
+                          "public": {
+                            "type": "boolean"
+                          },
+                          "snapshot_id": {
+                            "type": "string"
+                          },
+                          "tracks": {
+                            "type": "object",
+                            "properties": {
+                              "href": {
+                                "type": "string"
+                              },
+                              "total": {
+                                "type": "integer",
+                                "format": "int32"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "uri": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Spotify"
+        ],
+        "summary": "Create a Playlist",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "jeesookim"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the playlist. This name does not need to be unique.",
+                    "example": "my awesome playlist"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Description of your new playlist to be displayed in the Spotify UI.",
+                    "example": "filled with sick tunes!"
+                  },
+                  "public": {
+                    "type": "boolean",
+                    "description": "Defaults to true. If true the playlist will be public, if false it will be private."
+                  },
+                  "collaborative": {
+                    "type": "boolean",
+                    "description": "Defaults to false. If true the playlist will be collaborative."
+                  }
+                }
+              },
+              "example": {
+                "name": "Cool Cats Beatz",
+                "description": "Songs that only cool cats listen to",
+                "public": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "collaborative": {
+                      "type": "boolean",
+                      "description": "true if the owner allows other users to modify the playlist."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Description of created playlist",
+                      "example": "My awesome playlist!"
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Id of newly create playlist.",
+                      "example": "6WjLMm5KC2gRJu8gqbO2LY"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Name of playlist.",
+                      "example": "Some Playlist Name"
+                    },
+                    "external_urls": {
+                      "type": "object",
+                      "properties": {
+                        "spotify": {
+                          "type": "string",
+                          "description": "External link to created playlist.",
+                          "example": "https://api.spotify.com/v1/playlists/6WjLMm5KC2gRJu8gqbO2LY"
+                        }
+                      }
+                    },
+                    "href": {
+                      "type": "string",
+                      "description": "A link to the Web API endpoint for this user."
+                    },
+                    "public": {
+                      "type": "boolean",
+                      "description": "One of: public or private",
+                      "example": "public"
+                    },
+                    "followers": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "number",
+                          "description": "Number of followers.",
+                          "example": 32
+                        }
+                      }
+                    },
+                    "tracks": {
+                      "type": "object",
+                      "description": "The requested content.",
+                      "properties": {
+                        "href": {
+                          "type": "string",
+                          "description": "A link to the Web API endpoint for this user."
+                        },
+                        "limit": {
+                          "type": "number",
+                          "description": "The maximum number of items in the response (as set in the query or by default).",
+                          "example": 10
+                        },
+                        "next": {
+                          "type": "string",
+                          "description": "URL to the next page of items (null if none).",
+                          "example": "https://api.spotify.com/v1/me/shows?offset=1&limit=1"
+                        },
+                        "offset": {
+                          "type": "number",
+                          "description": "The offset of the items returned (as set in the query or by default).",
+                          "example": 5
+                        },
+                        "previous": {
+                          "type": "string",
+                          "description": "URL to the previous page of items (null if none).",
+                          "example": "https://api.spotify.com/v1/me/shows?offset=1&limit=1"
+                        },
+                        "items": {
+                          "type": "array",
+                          "description": "The requested content."
+                        },
+                        "total": {
+                          "type": "number",
+                          "description": "Total number of items available to return",
+                          "example": 20
+                        }
+                      }
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The object type: playlist",
+                      "example": "playlist"
+                    },
+                    "uri": {
+                      "type": "string",
+                      "description": "The Spotify URI for the user."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/player/play": {
+      "put": {
+        "tags": [
+          "Spotify"
+        ],
+        "operationId": "start-a-users-playback",
+        "summary": "Start/Resume Playback\n",
+        "description": "Start a new context or resume current playback on the user's active device.\n",
+        "parameters": [
+          {
+            "name": "device_id",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "title": "Device ID",
+              "description": "The id of the device this command is targeting. If not supplied, the user's currently active device is the target.",
+              "example": "0d1841b0976bae2a3a310dd74c0f3df354899bc8",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "example": {
+                  "context_uri": "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr",
+                  "offset": {
+                    "position": 5
+                  },
+                  "position_ms": 0
+                },
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                  "context_uri": {
+                    "description": "Optional. Spotify URI of the context to play.\nValid contexts are albums, artists & playlists.\n`{context_uri:\"spotify:album:1Je1IMUlBXcx1Fz0WE7oPT\"}`\n"
+                  },
+                  "uris": {
+                    "type": "array",
+                    "description": "Optional. A JSON array of the Spotify track URIs to play.\nFor example: `{\"uris\": [\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\", \"spotify:track:1301WleyT98MSxVHPZCA6M\"]}`\n",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "offset": {
+                    "type": "object",
+                    "description": "Optional. Indicates from where in the context playback should start. Only available when context_uri corresponds to an album or playlist object\n\"position\" is zero based and can’t be negative. Example: `\"offset\": {\"position\": 5}`\n\"uri\" is a string representing the uri of the item to start at. Example: `\"offset\": {\"uri\": \"spotify:track:1301WleyT98MSxVHPZCA6M\"}`\n",
+                    "additionalProperties": true
+                  },
+                  "position_ms": {
+                    "type": "integer",
+                    "description": "Indicates from what position to start playback. Must be a positive number. Passing in a position that is greater than the length of the track will cause the player to start playing the next song.\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Playback started",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/player/pause": {
+      "put": {
+        "tags": [
+          "Spotify"
+        ],
+        "summary": "Pause Playback",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "query",
+            "required": true,
+            "description": "The id of the device this command is targeting. If not supplied, the user's currently active device is the target.",
+            "schema": {
+              "type": "string",
+              "example": "0d1841b0976bae2a3a310dd74c0f3df354899bc8"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Playback paused",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/search": {
+      "get": {
+        "tags": [
+          "Spotify"
+        ],
+        "summary": "Search for new songs",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "title": "Query",
+              "description": "Your search query.\n"
+            }
+          },
+          {
+            "name": "type",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "title": "Track",
+              "description": "Your track\n"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "title": "Limit",
+              "description": "The maximum number of results to return in each item type.\n",
+              "default": 1,
+              "example": 1,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "title": "Offset",
+              "description": "The index of the first result to return. Use\nwith limit to get the next page of search results.\n",
+              "default": 0,
+              "minimum": 0,
+              "maximum": 1000,
+              "example": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Happened",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tracks": {
+                      "type": "object",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "href": {
+                                "type": "string"
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "is_local": {
+                                "type": "boolean"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "popularity": {
+                                "type": "integer",
+                                "format": "int32"
+                              },
+                              "preview_url": {
+                                "type": "string"
+                              },
+                              "track_number": {
+                                "type": "integer",
+                                "format": "int32"
+                              },
+                              "type": {
+                                "type": "string"
+                              },
+                              "uri": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/playlists/{playlist_id}/tracks": {
+      "post": {
+        "tags": [
+          "Spotify"
+        ],
+        "summary": "Add track to playlist",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "playlist_id",
+            "in": "path",
+            "description": "The playlist ID.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "4pC3AEVLaCB8AtHpC4bR36"
+            }
+          },
+          {
+            "name": "position",
+            "in": "query",
+            "description": "The position to insert the items, a zero-based index.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 0
+            }
+          },
+          {
+            "name": "uris",
+            "in": "query",
+            "description": "add tracks in list",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "spotify:track:4iV5W9uYEdYUVa79Axb7Rh"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Happened",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/player/next": {
+      "post": {
+        "tags": [
+          "Spotify"
+        ],
+        "summary": "Skip Song",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "query",
+            "required": true,
+            "description": "The id of the device this command is targeting. If not supplied, the user's currently active device is the target.",
+            "schema": {
+              "type": "string",
+              "example": "0d1841b0976bae2a3a310dd74c0f3df354899bc8"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Happened",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}
